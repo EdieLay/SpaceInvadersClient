@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualBasic;
 using SpaceInvadersClient.Properties;
 using SpaceInvadersServer;
-using SpaceInvadersServer.GameObjects;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,11 +18,13 @@ namespace SpaceInvadersClient
 {
     public partial class GameForm : Form
     {
-        const int TIMER_INTERVAL_MS = 60;
         GameSocket socket { get; set; } // сокет для отправки и получения игровых данных
         PacketManager packetManager { get; set; } // класс для конвертации отправляющихся и полученных данных
-        BattleField battleField;
+        DataManager dataManager { get; set; }
+
         System.Timers.Timer gameTimer { get; set; }
+        const int TIMER_INTERVAL_MS = 60;
+        BattleField battleField;
 
         Image enemyImg = new Bitmap(Resources.NoobShip);
         Image playerImg = new Bitmap(Resources.PlayerShip);
@@ -34,18 +35,20 @@ namespace SpaceInvadersClient
 
         Thread dataReceiveThread; // поток, в котором выполняется постоянное принятие данных
 
-        public GameForm(GameSocket _socket, PacketManager _packetManager)
+        public GameForm(GameSocket _socket, PacketManager _packetManager, DataManager _dataManager)
         {
             InitializeComponent();
 
             socket = _socket;
             packetManager = _packetManager;
+            dataManager = _dataManager;
             battleField = new BattleField();
             gameTimer = new System.Timers.Timer(TIMER_INTERVAL_MS);
             enemyBulletImg = bulletImg;
             enemyBulletImg.RotateFlip(RotateFlipType.Rotate180FlipNone);
 
-            labelLoading.Visible = true;
+            labelLoading.Show();
+            gameOverText.Hide();
 
             // ждем Enemies And Bullets Info по UDP 
             int packetOpcode = -1;
@@ -68,7 +71,7 @@ namespace SpaceInvadersClient
 
             // ???
 
-            labelLoading.Visible = false;
+            labelLoading.Hide();
         }
 
         private void Update(object? sender, EventArgs e)
@@ -139,8 +142,20 @@ namespace SpaceInvadersClient
         {
             gameTimer.Stop();
 
-            Data.AddResult(Data.PlayerName, score);
-            UI.ShowGameOver(gameOverText, msg, score, enemiesLeft);
+            dataManager.AddResult(battleField.Score);
+
+            string msg =  $"\nTotal score: {battleField.Score}\nPress Enter to restart";
+            gameOverText.Text = msg;
+            gameOverText.Show();
+        }
+
+        private void gameOverText_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                System.Diagnostics.Process.Start(Application.ExecutablePath);
+                Application.Exit();
+            }
         }
     }
 }

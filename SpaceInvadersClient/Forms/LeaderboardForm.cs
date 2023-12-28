@@ -15,15 +15,16 @@ namespace SpaceInvadersClient
     {
         GameSocket socket { get; set; } // сокет для отправки и получения игровых данных
         PacketManager packetManager { get; set; } // класс для конвертации отправляющихся и полученных данных
+        DataManager dataManager { get; set; }
 
-        public LeaderboardForm(GameSocket _socket, PacketManager _packetManager)
+        public LeaderboardForm(GameSocket _socket, PacketManager _packetManager, DataManager _dataManager)
         {
             InitializeComponent();
 
             socket = _socket;
             packetManager = _packetManager;
 
-            labelLoading.Visible = true;
+            labelLoading.Show();
 
             // ждем ???
             //int packetOpcodeNumber = -1;
@@ -31,7 +32,8 @@ namespace SpaceInvadersClient
             //    packetOpcodeNumber = packetManager.ParsePacket(socket.ReceivePacket());
 
             // начинаем отображать
-            labelLoading.Visible = false;
+            labelLoading.Hide();
+            dataManager = _dataManager;
         }
     }
 }

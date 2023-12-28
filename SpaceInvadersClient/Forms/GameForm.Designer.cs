@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             labelLoading = new Label();
+            gameOverText = new TextBox();
             SuspendLayout();
             // 
             // labelLoading
@@ -44,6 +45,21 @@
             labelLoading.TabIndex = 0;
             labelLoading.Text = "loading...";
             // 
+            // gameOverText
+            // 
+            gameOverText.BackColor = SystemColors.InfoText;
+            gameOverText.Font = new Font("Showcard Gothic", 15F, FontStyle.Regular, GraphicsUnit.Point);
+            gameOverText.ForeColor = SystemColors.HighlightText;
+            gameOverText.Location = new Point(90, 330);
+            gameOverText.Margin = new Padding(3, 2, 3, 2);
+            gameOverText.Multiline = true;
+            gameOverText.Name = "gameOverText";
+            gameOverText.ReadOnly = true;
+            gameOverText.ShortcutsEnabled = false;
+            gameOverText.Size = new Size(421, 140);
+            gameOverText.TabIndex = 1;
+            gameOverText.KeyDown += gameOverText_KeyDown;
+            // 
             // GameForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -52,6 +68,7 @@
             BackgroundImageLayout = ImageLayout.Zoom;
             ClientSize = new Size(600, 800);
             Controls.Add(labelLoading);
+            Controls.Add(gameOverText);
             DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Margin = new Padding(3, 2, 3, 2);
@@ -68,5 +85,6 @@
 
         #endregion
         private Label labelLoading;
+        private TextBox gameOverText;
     }
 }

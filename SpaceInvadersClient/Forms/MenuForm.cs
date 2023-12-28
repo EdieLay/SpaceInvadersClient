@@ -28,13 +28,14 @@ namespace SpaceInvadersClient
     {
         GameSocket socket { get; set; } // сокет для отправки и получения игровых данных
         PacketManager packetManager { get; set; } // класс для конвертации отправляющихся и полученных данных
+        DataManager dataManager { get; set; }
 
         public MenuForm()
         {
             InitializeComponent();
-            labelLoading.Visible = true;
-            buttonPlay.Visible = false;
-            buttonResults.Visible = false;
+            labelLoading.Show();
+            buttonPlay.Hide();
+            buttonResults.Hide();
 
             packetManager = new PacketManager();
 
@@ -60,9 +61,9 @@ namespace SpaceInvadersClient
 
             socket.InitUdpSocket(port);
 
-            labelLoading.Visible = false;
-            buttonPlay.Visible = true;
-            buttonResults.Visible = true;
+            labelLoading.Hide();
+            buttonPlay.Show();
+            buttonResults.Show();
         }
 
         private void buttonPlay_Click(object sender, EventArgs e)
@@ -70,14 +71,14 @@ namespace SpaceInvadersClient
             // send Press Play
             socket.SendTcpPacket(packetManager.CreatePressPlayPacket());
 
-            GameForm gameForm = new(socket, packetManager);
+            GameForm gameForm = new(socket, packetManager, dataManager);
             gameForm.Show();
             this.Hide();
         }
 
         private void buttonResults_Click(object sender, EventArgs e)
         {
-            LeaderboardForm leaderboardForm = new(socket, packetManager);
+            LeaderboardForm leaderboardForm = new(socket, packetManager, dataManager);
             leaderboardForm.Show();
             this.Hide();
         }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpaceInvadersServer.GameObjects
+namespace SpaceInvadersServer
 {
     public class Enemies
     {
