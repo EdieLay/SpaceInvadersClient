@@ -36,21 +36,20 @@ namespace SpaceInvadersClient
             buttonPlay.Visible = false;
             buttonResults.Visible = false;
 
-            socket = new GameSocket();
             packetManager = new PacketManager();
 
-            // send Launch Client
-            socket.SendTcpPacket(packetManager.CreateLaunchClientPacket());
-
-            this.Shown += new EventHandler(Send);
+            Shown += new EventHandler(StartConnectionToServer);
         }
 
-        private void Send(object sender, EventArgs e)
+        private void StartConnectionToServer(object sender, EventArgs e)
         {
-            // ждем OpenNewSocket
-            int packetOpcodeNumber = -1;
             int port = 0;
             Thread thread = new(() => {
+                socket = new GameSocket();
+                // send Launch Client
+                socket.SendTcpPacket(packetManager.CreateLaunchClientPacket());
+                // ждем OpenNewSocket
+                int packetOpcodeNumber = -1;
                 while (packetOpcodeNumber != (int)PacketOpcode.OpenNewSocket)
                 {
                     packetOpcodeNumber = packetManager.ParsePacket(socket.ReceiveTcpPacket(), ref port);
