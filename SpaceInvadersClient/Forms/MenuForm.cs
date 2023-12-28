@@ -4,15 +4,14 @@ namespace SpaceInvadersClient
 {
     enum PacketOpcode
     {
-        LaunchClient = 0, // Новый клиент запустил игру : к-с
-        OpenNewSocket = 1, // Открытие нового сокета : с-к
-        PressPlay = 2, // Нажата кнопка играть : к-с
-        GameObjectsInfo = 3, // Инфа об игроке, пацанах и пулях : с-к
-        KeyDown = 4, // Кнопка нажата (KeyDown) : к-с
-        KeyUp = 5, // Кнопка отжата (KeyUp) : к-с
-        ShotKeyDown = 6, // Кнопка выстрела (KeyDown) : к-с
-        NewScore = 7, // Новый счёт при попадании : с-к
-        PlayerDeath = 8, // Смерть игрока (конец игры) : с-к
+        OpenNewSocket = 0, // Открытие нового сокета : с-к
+        PressPlay = 1, // Нажата кнопка играть : к-с
+        GameObjectsInfo = 2, // Инфа об игроке, пацанах и пулях : с-к
+        KeyDown = 3, // Кнопка нажата (KeyDown) : к-с
+        KeyUp = 4, // Кнопка отжата (KeyUp) : к-с
+        ShotKeyDown = 5, // Кнопка выстрела (KeyDown) : к-с
+        NewScore = 6, // Новый счёт при попадании : с-к
+        PlayerDeath = 7, // Смерть игрока (конец игры) : с-к
     }
 
     public partial class MenuForm : Form
@@ -35,9 +34,7 @@ namespace SpaceInvadersClient
             int port = 0;
             Thread thread = new(() => {
                 socket = new GameSocket();
-                // send Launch Client
-                socket.SendTcpPacket(packetManager.CreateLaunchClientPacket());
-                // ждем OpenNewSocket
+                // ждем OpenNewSocket по TCP
                 int packetOpcodeNumber = -1;
                 while (packetOpcodeNumber != (int)PacketOpcode.OpenNewSocket)
                 {

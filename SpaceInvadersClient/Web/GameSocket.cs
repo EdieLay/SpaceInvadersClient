@@ -26,7 +26,7 @@ namespace SpaceInvadersClient
             }
             catch (SocketException) 
             {
-                Thread.Sleep(1000);
+                Thread.Sleep(100);
                 TryToConnectTcp();
             }
         }
@@ -57,7 +57,11 @@ namespace SpaceInvadersClient
 
         public void SendUdpPacket(byte[] packet)
         {
-            UdpSocket.SendTo(packet, ServerEndPoint);
+            Thread thread = new(() =>
+            {
+                UdpSocket.SendTo(packet, ServerEndPoint);
+            });
+            thread.Start();
         }
 
         public byte[] ReceiveUdpPacket()
