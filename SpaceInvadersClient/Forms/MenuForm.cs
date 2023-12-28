@@ -1,4 +1,6 @@
-﻿namespace SpaceInvadersClient
+﻿using System.Net.Sockets;
+
+namespace SpaceInvadersClient
 {
     enum PacketOpcode
     {
@@ -45,6 +47,7 @@
             thread.Start();
             thread.Join();
 
+            socket.CloseTcpSocket();
             socket.InitUdpSocket(port);
 
             labelLoading.Hide();

@@ -49,6 +49,12 @@ namespace SpaceInvadersClient
             return packet;
         }
 
+        public void CloseTcpSocket()
+        { 
+            TcpSocket.Shutdown(SocketShutdown.Both);
+            TcpSocket.Close(); 
+        }
+
         public void SendUdpPacket(byte[] packet)
         {
             UdpSocket.SendTo(packet, ServerEndPoint);
