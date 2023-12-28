@@ -1,10 +1,4 @@
 ﻿using SpaceInvadersServer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace SpaceInvadersClient
 {
@@ -87,15 +81,15 @@ namespace SpaceInvadersClient
                     int bulletsNumber = packet[18];
                     if (packet.Length < 19 + bulletsNumber * 5) return -1;
                     bf.EnemyBullets.Clear();
-                    bf.PlayerBullet = null;
+                    bf.PlayerBullet = new(0, 0, 0, false);
                     int ind = 18;
                     while (ind < 19 + bulletsNumber * 5)
                     {
                         int x = (packet[ind++] << 8) + packet[ind++];
                         int y = (packet[ind++] << 8) + packet[ind++];
                         int speed = packet[ind++];
-                        if (speed > 0) bf.EnemyBullets.Add(new Bullet(x, y, speed));
-                        else bf.PlayerBullet = new Bullet(x, y, speed);
+                        if (speed > 0) bf.EnemyBullets.Add(new Bullet(x, y, speed, true));
+                        else bf.PlayerBullet = new(x, y, speed, true);
                     }
                     return (int)PacketOpcode.GameObjectsInfo;
 

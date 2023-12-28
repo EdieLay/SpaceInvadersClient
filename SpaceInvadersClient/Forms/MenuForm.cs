@@ -1,15 +1,4 @@
-﻿using SpaceInvadersServer;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace SpaceInvadersClient
+﻿namespace SpaceInvadersClient
 {
     enum PacketOpcode
     {
@@ -27,8 +16,7 @@ namespace SpaceInvadersClient
     public partial class MenuForm : Form
     {
         GameSocket socket { get; set; } // сокет для отправки и получения игровых данных
-        PacketManager packetManager { get; set; } // класс для конвертации отправляющихся и полученных данных
-        DataManager dataManager { get; set; }
+        PacketManager packetManager { get; set; } = new(); // класс для конвертации отправляющихся и полученных данных
 
         public MenuForm()
         {
@@ -36,8 +24,6 @@ namespace SpaceInvadersClient
             labelLoading.Show();
             buttonPlay.Hide();
             buttonResults.Hide();
-
-            packetManager = new PacketManager();
 
             Shown += new EventHandler(StartConnectionToServer);
         }
@@ -71,14 +57,14 @@ namespace SpaceInvadersClient
             // send Press Play
             socket.SendTcpPacket(packetManager.CreatePressPlayPacket());
 
-            GameForm gameForm = new(socket, packetManager, dataManager);
+            GameForm gameForm = new(socket);
             gameForm.Show();
             this.Hide();
         }
 
         private void buttonResults_Click(object sender, EventArgs e)
         {
-            LeaderboardForm leaderboardForm = new(socket, packetManager, dataManager, this);
+            LeaderboardForm leaderboardForm = new(socket, this);
             leaderboardForm.Show();
             this.Hide();
         }

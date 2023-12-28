@@ -1,11 +1,4 @@
-﻿using SpaceInvadersClient.Properties;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SpaceInvadersServer
+﻿namespace SpaceInvadersServer
 {
     public class Player
     {
@@ -52,6 +45,11 @@ namespace SpaceInvadersServer
                 x = x + _speed > FIELD_WIDTH + _WIDTH ? FIELD_WIDTH + _WIDTH : x + _speed;
             else
                 x = x - _speed < 0 ? 0 : x - _speed;
+        }
+
+        public void CalculateBulletsCollision(List<Bullet> enemyBullets)
+        {
+            // ???
         }
     }
 }

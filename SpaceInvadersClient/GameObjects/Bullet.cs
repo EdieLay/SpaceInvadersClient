@@ -1,11 +1,4 @@
-﻿using SpaceInvadersClient.Properties;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SpaceInvadersServer
+﻿namespace SpaceInvadersServer
 {
     public class Bullet
     {
@@ -19,18 +12,19 @@ namespace SpaceInvadersServer
         int _speed;
         public int X { get => _x; }
         public int Y { get => _y; }
+        public bool IsAlive { get; set; }
 
-        public Bullet(int x, int y, int speed)
+        public Bullet(int x, int y, int speed, bool _isAlive = false)
         {
             this._x = x;
             this._y = y;
             _speed = speed;
+            IsAlive = _isAlive;
         }
 
         public void Move()
         {
             _x += _speed;
-            // y ???
         }
     }
 }

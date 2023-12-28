@@ -1,18 +1,5 @@
-﻿using Microsoft.VisualBasic;
-using SpaceInvadersClient.Properties;
+﻿using SpaceInvadersClient.Properties;
 using SpaceInvadersServer;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Net.Sockets;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace SpaceInvadersClient
 {
@@ -20,8 +7,8 @@ namespace SpaceInvadersClient
     {
         const int TIMER_INTERVAL_MS = 30;
         GameSocket socket { get; set; } // сокет для отправки и получения игровых данных
-        PacketManager packetManager { get; set; } // класс для конвертации отправляющихся и полученных данных
-        DataManager dataManager { get; set; }
+        PacketManager packetManager { get; set; } = new(); // класс для конвертации отправляющихся и полученных данных
+        DataManager dataManager { get; set; } = new();
 
         System.Timers.Timer gameTimer { get; set; }
         BattleField battleField;
@@ -35,13 +22,11 @@ namespace SpaceInvadersClient
 
         Thread dataReceiveThread; // поток, в котором выполняется постоянное принятие данных
 
-        public GameForm(GameSocket _socket, PacketManager _packetManager, DataManager _dataManager)
+        public GameForm(GameSocket _socket)
         {
             InitializeComponent();
 
             socket = _socket;
-            packetManager = _packetManager;
-            dataManager = _dataManager;
             battleField = new BattleField();
             gameTimer = new System.Timers.Timer(TIMER_INTERVAL_MS);
             enemyBulletImg = bulletImg;

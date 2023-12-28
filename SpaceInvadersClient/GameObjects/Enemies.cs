@@ -1,11 +1,4 @@
-﻿using SpaceInvadersClient.Properties;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SpaceInvadersServer
+﻿namespace SpaceInvadersServer
 {
     public class Enemies
     {
@@ -38,45 +31,161 @@ namespace SpaceInvadersServer
         int leftBorder;
         int rightBorder;
 
+        int downBorderNum; // номер нижней границы пацанов
+        int upBorderNum; // номер верхней
+        int leftBorderNum; // номер левой
+        int rightBorderNum; // номер правой
+
+        int wave; // текущая волна
+
         public Enemies(int fieldWidth, int fieldHeight)
         {
             boolEnemies = new bool[ROWS * COLS]; // 5 строк по 11 пацанов
             _enemiesAlive = ROWS * COLS;
             Array.Fill(boolEnemies, true);
+
             offsetX = 0;
             offsetY = 0;
             FIELD_WIDTH = fieldWidth;
             FIELD_HEIGHT = fieldHeight;
+
             downBorder = ROWS * _HEIGHT + (ROWS - 1) * GAP_Y;
             upBorder = 0;
             leftBorder = 0;
             rightBorder = COLS * _WIDTH + (COLS - 1) * GAP_X;
+
+            downBorderNum = ROWS - 1;
+            upBorderNum = 0;
+            leftBorderNum = 0;
+            rightBorderNum = COLS - 1;
+
+            wave = 1;
         }
 
         public void Move() // нужно изменить
         {
-            for (int i = 0; i < _x.Length; i++)
+            offsetX += speed;
+            if (offsetX + WIDTH * COLS + GAP_X * (COLS - 1) >= FIELD_WIDTH)
             {
-                _x[i] += speed;
-                // y ???
+                offsetY += HEIGHT;
+                offsetX = FIELD_WIDTH - WIDTH * COLS + GAP_X * (COLS - 1);
+                speed *= -1;
+            }
+            else if (offsetX < 0)
+            {
+                offsetY++;
+                offsetX = 0;
+                speed *= -1;
             }
         }
 
-        public void CalculateBulletCollision(Bullet bullet)
+        public int CalculateBulletCollision(Bullet bullet)
         {
+            if (!bullet.IsAlive) return 0;
+
             int bulX = bullet.X;
             int bulY = bullet.Y;
             int bulWidth = bullet.WIDTH;
             int bulHeight = bullet.HEIGHT;
             if (bulY > downBorder || bulY + bulHeight < upBorder ||
                 bulX + bulWidth < leftBorder || bulX > rightBorder)
-                return;
-            // добавить проверку на столкновение
+                return 0;
+
+            int x, y;
+            for (int i = upBorderNum; i <= downBorderNum; i++)
+            {
+                for (int j = leftBorderNum; j <= rightBorderNum; j++)
+                {
+                    if (!boolEnemies[i * COLS + j]) continue;
+                    x = j * (WIDTH + GAP_X);
+                    y = i * (HEIGHT + GAP_Y);
+                    if (x > bulX + bulWidth || x + WIDTH < bulX ||
+                        y > bulY + bulHeight || y + HEIGHT < bulY)
+                        continue;
+                    boolEnemies[i * COLS + j] = false;
+                    _enemiesAlive--;
+                    bullet.IsAlive = false;
+                    GetBorders();
+                    if (_enemiesAlive == 0)
+                    {
+                        StartNewWave();
+                        return wave - 1;
+                    }
+                    return wave;
+                }
+            }
+            return 0;
         }
 
         void GetBorders()
         {
+            if (_enemiesAlive == 0) return;
             // Высчитывание границ живых пацанов
+            int i = upBorderNum * COLS + leftBorderNum;
+            while (!boolEnemies[i])
+            {
+                if (i % COLS == rightBorderNum)
+                {
+                    upBorderNum++;
+                    i = upBorderNum * COLS + leftBorderNum;
+                }
+                else i++;
+            }
+
+            i = downBorderNum * COLS + leftBorderNum;
+            while (!boolEnemies[i])
+            {
+                if (i % COLS == rightBorderNum)
+                {
+                    downBorderNum--;
+                    i = downBorderNum * COLS + leftBorderNum;
+                }
+                else i++;
+            }
+
+            i = upBorderNum * COLS + leftBorderNum;
+            while (!boolEnemies[i])
+            {
+                if (i / COLS == downBorderNum)
+                {
+                    leftBorderNum++;
+                    i = upBorderNum * COLS + leftBorderNum;
+                }
+                i += COLS;
+            }
+
+            i = upBorderNum * COLS + rightBorderNum;
+            while (!boolEnemies[i])
+            {
+                if (i / COLS == downBorderNum)
+                {
+                    rightBorderNum--;
+                    i = upBorderNum * COLS + rightBorderNum;
+                }
+                i += COLS;
+            }
+
+            upBorder = upBorderNum * (HEIGHT + GAP_Y);
+            downBorder = downBorderNum * (HEIGHT + GAP_Y) + HEIGHT;
+            leftBorder = leftBorderNum * (WIDTH + GAP_X);
+            rightBorder = rightBorderNum * (WIDTH + GAP_X) + WIDTH;
+        }
+
+        void StartNewWave()
+        {
+            _enemiesAlive = ROWS * COLS;
+            Array.Fill(boolEnemies, true);
+            offsetX = 0;
+            offsetY = 0;
+            downBorderNum = ROWS - 1;
+            upBorderNum = 0;
+            leftBorderNum = 0;
+            rightBorderNum = COLS - 1;
+            downBorder = ROWS * HEIGHT + (ROWS - 1) * GAP_Y;
+            upBorder = 0;
+            leftBorder = 0;
+            rightBorder = COLS * WIDTH + (COLS - 1) * GAP_X;
+            wave++;
         }
     }
 }
