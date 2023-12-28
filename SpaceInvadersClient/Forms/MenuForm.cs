@@ -41,7 +41,7 @@ namespace SpaceInvadersClient
             Shown += new EventHandler(StartConnectionToServer);
         }
 
-        private void StartConnectionToServer(object sender, EventArgs e)
+        private void StartConnectionToServer(object? sender, EventArgs e)
         {
             int port = 0;
             Thread thread = new(() => {

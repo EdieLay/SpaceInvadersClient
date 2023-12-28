@@ -13,6 +13,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace SpaceInvadersClient
 {
@@ -29,7 +30,9 @@ namespace SpaceInvadersClient
         Image bulletImg = new Bitmap(Resources.Bullet);
         Image enemyBulletImg;
 
-        int packetNumber = 0;
+        int packetNumber = 0; // номер последнего принятого пакета GameObjectsInfo
+
+        Thread dataReceiveThread; // поток, в котором выполняется постоянное принятие данных
 
         public GameForm(GameSocket _socket, PacketManager _packetManager)
         {
@@ -52,8 +55,8 @@ namespace SpaceInvadersClient
             // инициализируем игру
             InitGame();
 
-            Thread thread = new(() => { ParallelDataReceive(); });
-            thread.Start();
+            dataReceiveThread = new(() => { ParallelDataReceive(); });
+            dataReceiveThread.Start();
         }
 
         private void InitGame() // инициализация игры
@@ -123,8 +126,21 @@ namespace SpaceInvadersClient
         private void ParallelDataReceive()
         {
             while (true) {
-                _ = packetManager.ParsePacket(socket.ReceiveUdpPacket(), ref battleField, ref packetNumber);
+                int opcode = packetManager.ParsePacket(socket.ReceiveUdpPacket(), ref battleField, ref packetNumber);
+                if (opcode == (int)PacketOpcode.PlayerDeath)
+                {
+                    FinishGame();
+                    return;
+                }
             }
+        }
+
+        private void FinishGame()
+        {
+            gameTimer.Stop();
+
+            Data.AddResult(Data.PlayerName, score);
+            UI.ShowGameOver(gameOverText, msg, score, enemiesLeft);
         }
     }
 }
