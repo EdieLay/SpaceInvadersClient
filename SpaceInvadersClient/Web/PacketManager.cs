@@ -6,29 +6,24 @@ namespace SpaceInvadersClient
     {
         public PacketManager() { }
 
-        public byte[] CreateLaunchClientPacket() // 0
+        public byte[] CreatePressPlayPacket() // 1
         {
-            return new byte[] { Convert.ToByte(PacketOpcode.LaunchClient) };
+            return new byte[] { (byte)PacketOpcode.PressPlay };
         }
 
-        public byte[] CreatePressPlayPacket() // 2
+        public byte[] CreateKeyDownPacket(bool flagRight) // 3
         {
-            return new byte[] { Convert.ToByte(PacketOpcode.PressPlay) };
+            return new byte[] { (byte)PacketOpcode.KeyDown, Convert.ToByte(flagRight) };
         }
 
-        public byte[] CreateKeyDownPacket(bool flagRight) // 4
+        public byte[] CreateKeyUpPacket(bool flagRight) // 4
         {
-            return new byte[] { Convert.ToByte(PacketOpcode.KeyDown), Convert.ToByte(flagRight) };
+            return new byte[] { (byte)PacketOpcode.KeyUp, Convert.ToByte(flagRight) };
         }
 
-        public byte[] CreateKeyUpPacket(bool flagRight) // 5
+        public byte[] CreateShotKeyDownPacket() // 5
         {
-            return new byte[] { Convert.ToByte(PacketOpcode.KeyUp), Convert.ToByte(flagRight) };
-        }
-
-        public byte[] CreateShotKeyDownPacket() // 6
-        {
-            return new byte[] { Convert.ToByte(PacketOpcode.ShotKeyDown) };
+            return new byte[] { (byte)PacketOpcode.ShotKeyDown };
         }
 
         public int ParsePacket(byte[] packet, ref int port)
