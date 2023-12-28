@@ -28,30 +28,44 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            gameTimer = new System.Windows.Forms.Timer(components);
+            labelLoading = new Label();
             SuspendLayout();
             // 
-            // gameTimer
+            // labelLoading
             // 
-            gameTimer.Interval = 60;
+            labelLoading.AutoSize = true;
+            labelLoading.BackColor = Color.Transparent;
+            labelLoading.Font = new Font("Consolas", 36F, FontStyle.Bold, GraphicsUnit.Point);
+            labelLoading.ForeColor = SystemColors.ButtonHighlight;
+            labelLoading.ImageAlign = ContentAlignment.TopLeft;
+            labelLoading.Location = new Point(170, 404);
+            labelLoading.Name = "labelLoading";
+            labelLoading.Size = new Size(284, 56);
+            labelLoading.TabIndex = 0;
+            labelLoading.Text = "loading...";
             // 
             // GameForm
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackgroundImage = Properties.Resources.Background;
             ClientSize = new Size(600, 800);
+            Controls.Add(labelLoading);
             DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Margin = new Padding(3, 2, 3, 2);
             MaximizeBox = false;
             Name = "GameForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "GameForm";
+            Paint += OnPaint;
+            KeyDown += GameForm_KeyDown;
+            KeyUp += GameForm_KeyUp;
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
-
-        private System.Windows.Forms.Timer gameTimer;
+        private Label labelLoading;
     }
 }

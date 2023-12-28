@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpaceInvadersClient.Properties;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,19 +7,30 @@ using System.Threading.Tasks;
 
 namespace SpaceInvadersServer.GameObjects
 {
-    internal class Enemies
+    public class Enemies
     {
-        // заменить логику на реальные значения координат и изменять сразу их
+        const int _WIDTH = 20; // ширина пацана
+        const int _HEIGHT = 15; // высота пацана
+        public int WIDTH { get => _WIDTH; }
+        public int HEIGHT { get => _HEIGHT; }
+
         const int ROWS = 5; // количество строк пацанов
         const int COLS = 11; // количество столбцов пацанов
-        const int WIDTH = 20; // ширина пацана
-        const int HEIGHT = 15; // высота пацана
         const int GAP_X = 3; // расстояние от правого конца пацана до следующего пацана
-        const int GAP_Y = HEIGHT; // расстояние от нижнего конйа пацана до следующего пацана
+        const int GAP_Y = _HEIGHT; // расстояние от нижнего конца пацана до следующего пацана
         readonly int FIELD_WIDTH; // ширина поля
         readonly int FIELD_HEIGHT; // высота поля
-        bool[] enemies; // массив пацанов: true - жив, false - мертв
-        int enemiesAlive;
+
+        bool[] _enemyIsAlive; // массив пацанов: true - жив, false - мертв
+        int[] _x; // реальные координаты пацанов
+        int[] _y;
+        int _enemiesAlive;
+        public bool[] EnemyIsAlive { get => _enemyIsAlive; }
+        public int[] X { get => _x; }
+        public int[] Y { get => _y; }
+        public int EnemiesAlive { get => _enemiesAlive; }
+        
+
         int offsetX; // смещение левого верхнего угла каждого пацана относительно его начальной позиции по икс
         int offsetY; // смещение левого верхнего угла каждого пацана относительно его начальной позиции по игрек
         int speed; // скорость пацанов по икс за тик таймера
@@ -29,27 +41,27 @@ namespace SpaceInvadersServer.GameObjects
 
         public Enemies(int fieldWidth, int fieldHeight)
         {
-            enemies = new bool[ROWS * COLS]; // 5 строк по 11 пацанов
-            enemiesAlive = ROWS * COLS;
-            Array.Fill(enemies, true);
+            _enemyIsAlive = new bool[ROWS * COLS]; // 5 строк по 11 пацанов
+            _enemiesAlive = ROWS * COLS;
+            Array.Fill(_enemyIsAlive, true);
             offsetX = 0;
             offsetY = 0;
             CalculateSpeed();
             FIELD_WIDTH = fieldWidth;
             FIELD_HEIGHT = fieldHeight;
-            downBorder = ROWS * HEIGHT + (ROWS - 1) * GAP_Y;
+            downBorder = ROWS * _HEIGHT + (ROWS - 1) * GAP_Y;
             upBorder = 0;
             leftBorder = 0;
-            rightBorder = COLS * WIDTH + (COLS - 1) * GAP_X;
+            rightBorder = COLS * _WIDTH + (COLS - 1) * GAP_X;
         }
 
         public void Move() // нужно изменить
         {
             offsetX += speed;
-            if (offsetX + WIDTH * COLS + GAP_X * (COLS - 1) >= FIELD_WIDTH)
+            if (offsetX + _WIDTH * COLS + GAP_X * (COLS - 1) >= FIELD_WIDTH)
             {
-                offsetY += HEIGHT;
-                offsetX = FIELD_WIDTH - WIDTH * COLS + GAP_X * (COLS - 1);
+                offsetY += _HEIGHT;
+                offsetX = FIELD_WIDTH - _WIDTH * COLS + GAP_X * (COLS - 1);
                 speed *= -1;
             }
             else if (offsetX < 0)
@@ -64,7 +76,7 @@ namespace SpaceInvadersServer.GameObjects
         {
             // enemiesAlive = 55 => speed = 4
             // enemiesAlive = 1  => speed = 36
-            speed = (int)(243.0 / (enemiesAlive + 5.75));
+            speed = (int)(243.0 / (_enemiesAlive + 5.75));
         }
 
         public void CalculateBulletCollision(Bullet bullet)
