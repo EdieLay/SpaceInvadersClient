@@ -41,9 +41,9 @@
             buttonResults.FlatAppearance.MouseDownBackColor = Color.SteelBlue;
             buttonResults.FlatAppearance.MouseOverBackColor = Color.LightBlue;
             buttonResults.FlatStyle = FlatStyle.Flat;
-            buttonResults.Font = new Font("Consolas", 27.75F, FontStyle.Bold, GraphicsUnit.Point);
+            buttonResults.Font = new Font("Consolas", 28F, FontStyle.Bold, GraphicsUnit.Point);
             buttonResults.ForeColor = SystemColors.ButtonHighlight;
-            buttonResults.Location = new Point(177, 402);
+            buttonResults.Location = new Point(178, 402);
             buttonResults.Name = "buttonResults";
             buttonResults.Size = new Size(260, 70);
             buttonResults.TabIndex = 2;
@@ -58,9 +58,9 @@
             buttonPlay.FlatAppearance.MouseDownBackColor = Color.SteelBlue;
             buttonPlay.FlatAppearance.MouseOverBackColor = Color.LightBlue;
             buttonPlay.FlatStyle = FlatStyle.Flat;
-            buttonPlay.Font = new Font("Consolas", 27.75F, FontStyle.Bold, GraphicsUnit.Point);
+            buttonPlay.Font = new Font("Consolas", 28F, FontStyle.Bold, GraphicsUnit.Point);
             buttonPlay.ForeColor = SystemColors.ButtonHighlight;
-            buttonPlay.Location = new Point(177, 289);
+            buttonPlay.Location = new Point(178, 289);
             buttonPlay.Name = "buttonPlay";
             buttonPlay.Size = new Size(260, 70);
             buttonPlay.TabIndex = 3;

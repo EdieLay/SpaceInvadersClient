@@ -26,5 +26,11 @@ namespace SpaceInvadersServer
             this._y = y;
             _speed = speed;
         }
+
+        public void Move()
+        {
+            _x += _speed;
+            // y ???
+        }
     }
 }

@@ -18,12 +18,12 @@ namespace SpaceInvadersClient
 {
     public partial class GameForm : Form
     {
+        const int TIMER_INTERVAL_MS = 30;
         GameSocket socket { get; set; } // сокет для отправки и получения игровых данных
         PacketManager packetManager { get; set; } // класс для конвертации отправляющихся и полученных данных
         DataManager dataManager { get; set; }
 
         System.Timers.Timer gameTimer { get; set; }
-        const int TIMER_INTERVAL_MS = 60;
         BattleField battleField;
 
         Image enemyImg = new Bitmap(Resources.NoobShip);
@@ -103,10 +103,12 @@ namespace SpaceInvadersClient
         {
             if (e.KeyCode == Keys.A) // влево
             {
+                battleField.Player.KeyDown(false);
                 socket.SendUdpPacket(packetManager.CreateKeyDownPacket(false));
             }
             else if (e.KeyCode == Keys.D) // вправо
             {
+                battleField.Player.KeyDown(true);
                 socket.SendUdpPacket(packetManager.CreateKeyDownPacket(true));
             }
             else if (e.KeyCode == Keys.Space) // выстрел
@@ -118,10 +120,12 @@ namespace SpaceInvadersClient
         {
             if (e.KeyCode == Keys.A) // влево
             {
+                battleField.Player.KeyUp();
                 socket.SendUdpPacket(packetManager.CreateKeyUpPacket(false));
             }
             else if (e.KeyCode == Keys.D) // вправо
             {
+                battleField.Player.KeyUp();
                 socket.SendUdpPacket(packetManager.CreateKeyUpPacket(true));
             }
         }

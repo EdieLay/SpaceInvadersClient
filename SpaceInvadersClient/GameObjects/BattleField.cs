@@ -33,22 +33,12 @@ namespace SpaceInvadersServer
 
         public void Update() // тут происходит вся логика игры
         {
-            //enemies.Move();
-            //for (int i = 0; i < enemyBullets.Count; i++)
-            //    enemyBullets.Move();
-            //playerBullet.Move();
-        }
+            _enemies.Move();
+            for (int i = 0; i < _enemyBullets.Count; i++)
+                _enemyBullets[i].Move();
 
-        public void UpdatePlayer(/*params*/)
-        {
-            //player.Move(/*params*/);
-        }
-
-        public void Sync() // тут происходит сихнронизация enemies, enemyBullets, player, playerBullet
-        {
-            //enemies
-            //enemyBullets
-            //playerBullet
+            _player.Move();
+            if (_playerBullet != null) _playerBullet.Move();
         }
     }
 }

@@ -47,10 +47,11 @@
             // 
             // gameOverText
             // 
+            gameOverText.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             gameOverText.BackColor = SystemColors.InfoText;
-            gameOverText.Font = new Font("Showcard Gothic", 15F, FontStyle.Regular, GraphicsUnit.Point);
+            gameOverText.Font = new Font("Consolas", 20F, FontStyle.Bold, GraphicsUnit.Point);
             gameOverText.ForeColor = SystemColors.HighlightText;
-            gameOverText.Location = new Point(90, 330);
+            gameOverText.Location = new Point(97, 330);
             gameOverText.Margin = new Padding(3, 2, 3, 2);
             gameOverText.Multiline = true;
             gameOverText.Name = "gameOverText";
@@ -58,6 +59,7 @@
             gameOverText.ShortcutsEnabled = false;
             gameOverText.Size = new Size(421, 140);
             gameOverText.TabIndex = 1;
+            gameOverText.TextAlign = HorizontalAlignment.Center;
             gameOverText.KeyDown += gameOverText_KeyDown;
             // 
             // GameForm

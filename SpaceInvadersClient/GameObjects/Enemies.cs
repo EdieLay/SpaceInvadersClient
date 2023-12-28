@@ -21,8 +21,7 @@ namespace SpaceInvadersServer
         readonly int FIELD_WIDTH; // ширина поля
         readonly int FIELD_HEIGHT; // высота поля
 
-        // массив пацанов: true - жив, false - мертв
-        public bool[] boolEnemies { get; set; }
+        public bool[] boolEnemies { get; set; } // массив пацанов: true - жив, false - мертв
         int[] _x; // реальные координаты пацанов
         int[] _y;
         int _enemiesAlive;
@@ -30,12 +29,9 @@ namespace SpaceInvadersServer
         public int[] Y { get => _y; }
         public int EnemiesAlive { get => _enemiesAlive; }
 
-        // смещение левого верхнего угла каждого пацана относительно его начальной позиции по икс
-        public int offsetX { get; set; }
-        // смещение левого верхнего угла каждого пацана относительно его начальной позиции по игрек
-        public int offsetY { get; set; }
-        // скорость пацанов по икс за тик таймера
-        public int speed { get; set; }
+        public int offsetX { get; set; } // смещение левого верхнего угла каждого пацана относительно его начальной позиции по икс
+        public int offsetY { get; set; } // смещение левого верхнего угла каждого пацана относительно его начальной позиции по игрек
+        public int speed { get; set; } // скорость пацанов по икс за тик таймера
 
         int downBorder;
         int upBorder;
@@ -49,7 +45,6 @@ namespace SpaceInvadersServer
             Array.Fill(boolEnemies, true);
             offsetX = 0;
             offsetY = 0;
-            CalculateSpeed();
             FIELD_WIDTH = fieldWidth;
             FIELD_HEIGHT = fieldHeight;
             downBorder = ROWS * _HEIGHT + (ROWS - 1) * GAP_Y;
@@ -60,26 +55,11 @@ namespace SpaceInvadersServer
 
         public void Move() // нужно изменить
         {
-            offsetX += speed;
-            if (offsetX + _WIDTH * COLS + GAP_X * (COLS - 1) >= FIELD_WIDTH)
+            for (int i = 0; i < _x.Length; i++)
             {
-                offsetY += _HEIGHT;
-                offsetX = FIELD_WIDTH - _WIDTH * COLS + GAP_X * (COLS - 1);
-                speed *= -1;
+                _x[i] += speed;
+                // y ???
             }
-            else if (offsetX < 0)
-            {
-                offsetY++;
-                offsetX = 0;
-                speed *= -1;
-            }
-        }
-
-        void CalculateSpeed()
-        {
-            // enemiesAlive = 55 => speed = 4
-            // enemiesAlive = 1  => speed = 36
-            speed = (int)(243.0 / (_enemiesAlive + 5.75));
         }
 
         public void CalculateBulletCollision(Bullet bullet)
@@ -97,11 +77,6 @@ namespace SpaceInvadersServer
         void GetBorders()
         {
             // Высчитывание границ живых пацанов
-        }
-
-        void ReplaceWithServerData()
-        {
-            // заменяет высчитанные на клиенте данные на данные, пришедшие с сервера
         }
     }
 }

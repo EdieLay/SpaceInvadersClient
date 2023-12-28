@@ -78,7 +78,7 @@ namespace SpaceInvadersClient
 
         private void buttonResults_Click(object sender, EventArgs e)
         {
-            LeaderboardForm leaderboardForm = new(socket, packetManager, dataManager);
+            LeaderboardForm leaderboardForm = new(socket, packetManager, dataManager, this);
             leaderboardForm.Show();
             this.Hide();
         }

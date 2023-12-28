@@ -24,6 +24,9 @@ namespace SpaceInvadersServer
         public int _speed = 10;
         public int Speed { get => _speed; }
 
+        bool flagMove = false;
+        bool toRight;
+
         public Player(int fieldWidth, int fieldHeight)
         {
             FIELD_WIDTH = fieldWidth;
@@ -32,8 +35,19 @@ namespace SpaceInvadersServer
             x = FIELD_WIDTH / 2 - _WIDTH / 2;
         }
 
-        public void Move(bool toRight)
+        public void KeyDown(bool _toRight)
         {
+            flagMove = true;
+            toRight = _toRight;
+        }
+        public void KeyUp()
+        {
+            flagMove = false;
+        }
+
+        public void Move()
+        {
+            if (!flagMove) return;
             if (toRight)
                 x = x + _speed > FIELD_WIDTH + _WIDTH ? FIELD_WIDTH + _WIDTH : x + _speed;
             else

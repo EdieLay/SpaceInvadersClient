@@ -16,14 +16,18 @@ namespace SpaceInvadersClient
         GameSocket socket { get; set; } // сокет для отправки и получения игровых данных
         PacketManager packetManager { get; set; } // класс для конвертации отправляющихся и полученных данных
         DataManager dataManager { get; set; }
+        MenuForm menuForm { get; set; }
 
-        public LeaderboardForm(GameSocket _socket, PacketManager _packetManager, DataManager _dataManager)
+        public LeaderboardForm(GameSocket _socket, PacketManager _packetManager, DataManager _dataManager, MenuForm _menuForm)
         {
             InitializeComponent();
 
             socket = _socket;
             packetManager = _packetManager;
+            dataManager = _dataManager;
+            menuForm = _menuForm;
 
+            textResults.Hide();
             labelLoading.Show();
 
             // ждем ???
@@ -33,7 +37,15 @@ namespace SpaceInvadersClient
 
             // начинаем отображать
             labelLoading.Hide();
-            dataManager = _dataManager;
+            textResults.Show();
+
+            textResults.Text = dataManager.GetResults();
+        }
+
+        private void buttonExit_Click(object sender, EventArgs e)
+        {
+            menuForm.Show();
+            this.Close();
         }
     }
 }
