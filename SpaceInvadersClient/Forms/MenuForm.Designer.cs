@@ -43,7 +43,7 @@
             buttonResults.FlatStyle = FlatStyle.Flat;
             buttonResults.Font = new Font("Consolas", 27.75F, FontStyle.Bold, GraphicsUnit.Point);
             buttonResults.ForeColor = SystemColors.ButtonHighlight;
-            buttonResults.Location = new Point(173, 394);
+            buttonResults.Location = new Point(177, 402);
             buttonResults.Name = "buttonResults";
             buttonResults.Size = new Size(260, 70);
             buttonResults.TabIndex = 2;
@@ -60,7 +60,7 @@
             buttonPlay.FlatStyle = FlatStyle.Flat;
             buttonPlay.Font = new Font("Consolas", 27.75F, FontStyle.Bold, GraphicsUnit.Point);
             buttonPlay.ForeColor = SystemColors.ButtonHighlight;
-            buttonPlay.Location = new Point(173, 281);
+            buttonPlay.Location = new Point(177, 289);
             buttonPlay.Name = "buttonPlay";
             buttonPlay.Size = new Size(260, 70);
             buttonPlay.TabIndex = 3;
@@ -74,7 +74,7 @@
             labelLoading.Font = new Font("Consolas", 36F, FontStyle.Bold, GraphicsUnit.Point);
             labelLoading.ForeColor = SystemColors.ButtonHighlight;
             labelLoading.ImageAlign = ContentAlignment.TopLeft;
-            labelLoading.Location = new Point(161, 335);
+            labelLoading.Location = new Point(166, 343);
             labelLoading.Name = "labelLoading";
             labelLoading.Size = new Size(284, 56);
             labelLoading.TabIndex = 4;
@@ -85,6 +85,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.Background;
+            BackgroundImageLayout = ImageLayout.Zoom;
             ClientSize = new Size(600, 800);
             Controls.Add(labelLoading);
             Controls.Add(buttonPlay);

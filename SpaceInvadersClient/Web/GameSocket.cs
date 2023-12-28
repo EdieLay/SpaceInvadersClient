@@ -13,21 +13,26 @@ namespace SpaceInvadersClient
         IPAddress serverIP = IPAddress.Parse("127.0.0.1");
         EndPoint ServerEndPoint { get; set; }
         EndPoint GameEndPoint { get; set; }
-        Socket TcpSocket { get; set; } = new(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-        Socket UdpSocket { get; set; } = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        Socket TcpSocket { get; set; } = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        Socket UdpSocket { get; set; } = new(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
         public GameSocket()
         {
             ServerEndPoint = new IPEndPoint(serverIP, 14700);
             GameEndPoint = ServerEndPoint;
-            while (true)
+            TryToConnectTcp();
+        }
+
+        private void TryToConnectTcp()
+        {
+            try
             {
-                try
-                {
-                    TcpSocket.Connect(ServerEndPoint);
-                }
-                catch (SocketException) { }
-                return;
+                TcpSocket.Connect(ServerEndPoint);
+            }
+            catch (SocketException) 
+            {
+                Thread.Sleep(1000);
+                TryToConnectTcp();
             }
         }
 

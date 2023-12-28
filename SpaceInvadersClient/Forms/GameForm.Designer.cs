@@ -38,7 +38,7 @@
             labelLoading.Font = new Font("Consolas", 36F, FontStyle.Bold, GraphicsUnit.Point);
             labelLoading.ForeColor = SystemColors.ButtonHighlight;
             labelLoading.ImageAlign = ContentAlignment.TopLeft;
-            labelLoading.Location = new Point(170, 404);
+            labelLoading.Location = new Point(166, 343);
             labelLoading.Name = "labelLoading";
             labelLoading.Size = new Size(284, 56);
             labelLoading.TabIndex = 0;
@@ -49,6 +49,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.Background;
+            BackgroundImageLayout = ImageLayout.Zoom;
             ClientSize = new Size(600, 800);
             Controls.Add(labelLoading);
             DoubleBuffered = true;
