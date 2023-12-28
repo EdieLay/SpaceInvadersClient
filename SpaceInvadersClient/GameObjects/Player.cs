@@ -19,10 +19,9 @@ namespace SpaceInvadersServer
 
 
         readonly int _Y;
-        int _x;
-        int _speed;
-        public int Y {  get => _Y; }
-        public int X { get => _x; }
+        public int Y { get => _Y; }
+        public int x { get; set; }
+        public int _speed = 10;
         public int Speed { get => _speed; }
 
         public Player(int fieldWidth, int fieldHeight)
@@ -30,15 +29,15 @@ namespace SpaceInvadersServer
             FIELD_WIDTH = fieldWidth;
             FIELD_HEIGHT = fieldHeight;
             _Y = FIELD_HEIGHT - 2 * HEIGHT;
-            _x = FIELD_WIDTH / 2 - _WIDTH / 2;
+            x = FIELD_WIDTH / 2 - _WIDTH / 2;
         }
 
         public void Move(bool toRight)
         {
             if (toRight)
-                _x = _x + _speed > FIELD_WIDTH + _WIDTH ? FIELD_WIDTH + _WIDTH : _x + _speed;
+                x = x + _speed > FIELD_WIDTH + _WIDTH ? FIELD_WIDTH + _WIDTH : x + _speed;
             else
-                _x = _x - _speed < 0 ? 0 : _x - _speed;
+                x = x - _speed < 0 ? 0 : x - _speed;
         }
     }
 }

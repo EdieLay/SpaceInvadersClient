@@ -21,19 +21,22 @@ namespace SpaceInvadersServer.GameObjects
         readonly int FIELD_WIDTH; // ширина поля
         readonly int FIELD_HEIGHT; // высота поля
 
-        bool[] _enemyIsAlive; // массив пацанов: true - жив, false - мертв
+        // массив пацанов: true - жив, false - мертв
+        public bool[] boolEnemies { get; set; }
         int[] _x; // реальные координаты пацанов
         int[] _y;
         int _enemiesAlive;
-        public bool[] EnemyIsAlive { get => _enemyIsAlive; }
         public int[] X { get => _x; }
         public int[] Y { get => _y; }
         public int EnemiesAlive { get => _enemiesAlive; }
-        
 
-        int offsetX; // смещение левого верхнего угла каждого пацана относительно его начальной позиции по икс
-        int offsetY; // смещение левого верхнего угла каждого пацана относительно его начальной позиции по игрек
-        int speed; // скорость пацанов по икс за тик таймера
+        // смещение левого верхнего угла каждого пацана относительно его начальной позиции по икс
+        public int offsetX { get; set; }
+        // смещение левого верхнего угла каждого пацана относительно его начальной позиции по игрек
+        public int offsetY { get; set; }
+        // скорость пацанов по икс за тик таймера
+        public int speed { get; set; }
+
         int downBorder;
         int upBorder;
         int leftBorder;
@@ -41,9 +44,9 @@ namespace SpaceInvadersServer.GameObjects
 
         public Enemies(int fieldWidth, int fieldHeight)
         {
-            _enemyIsAlive = new bool[ROWS * COLS]; // 5 строк по 11 пацанов
+            boolEnemies = new bool[ROWS * COLS]; // 5 строк по 11 пацанов
             _enemiesAlive = ROWS * COLS;
-            Array.Fill(_enemyIsAlive, true);
+            Array.Fill(boolEnemies, true);
             offsetX = 0;
             offsetY = 0;
             CalculateSpeed();

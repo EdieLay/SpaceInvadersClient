@@ -19,9 +19,9 @@ namespace SpaceInvadersServer
 
         public Enemies Enemies { get => _enemies; }
         public List<Bullet> EnemyBullets { get => _enemyBullets; }
-        public Bullet? PlayerBullet { get => _playerBullet; }
+        public Bullet? PlayerBullet { get; set; }
         public Player Player { get => _player; }
-        public int Score { get => score; }
+        public int Score { get; set; }
 
         public BattleField()
         {

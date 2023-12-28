@@ -44,7 +44,7 @@ namespace SpaceInvadersClient
 
             // ждем OpenNewSocket
             int packetOpcodeNumber = -1;
-            int port = -1;
+            int port = 0;
             while (packetOpcodeNumber != (int)PacketOpcode.OpenNewSocket)
                 packetOpcodeNumber = packetManager.ParsePacket(socket.ReceiveTcpPacket(), ref port);
             socket.InitUdpSocket(port);

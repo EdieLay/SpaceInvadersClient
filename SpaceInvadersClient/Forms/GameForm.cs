@@ -29,6 +29,8 @@ namespace SpaceInvadersClient
         Image bulletImg = new Bitmap(Resources.Bullet);
         Image enemyBulletImg;
 
+        int packetNumber = 0;
+
         public GameForm(GameSocket _socket, PacketManager _packetManager)
         {
             InitializeComponent();
@@ -42,13 +44,16 @@ namespace SpaceInvadersClient
 
             labelLoading.Visible = true;
 
-            // ждем Enemies And Bullets Info уже по UDP 
-            int packetOpcodeNumber = -1;
-            while (packetOpcodeNumber != (int)PacketOpcode.GameObjectsInfo)
-                packetOpcodeNumber = packetManager.ParsePacket(socket.ReceiveUdpPacket(), ref battleField);
+            // ждем Enemies And Bullets Info по UDP 
+            int packetOpcode = -1;
+            while (packetOpcode != (int)PacketOpcode.GameObjectsInfo)
+                packetOpcode = packetManager.ParsePacket(socket.ReceiveUdpPacket(), ref battleField, ref packetNumber);
 
             // инициализируем игру
             InitGame();
+
+            Thread thread = new(() => { ParallelDataReceive(); });
+            thread.Start();
         }
 
         private void InitGame() // инициализация игры
@@ -73,16 +78,16 @@ namespace SpaceInvadersClient
             Graphics graphics = e.Graphics;
 
             Enemies enemies = battleField.Enemies;
-            for (int i = 0; i < enemies.EnemyIsAlive.Length; i++)
+            for (int i = 0; i < enemies.boolEnemies.Length; i++)
             {
-                if (enemies.EnemyIsAlive[i])
+                if (enemies.boolEnemies[i])
                     graphics.DrawImage(enemyImg, enemies.X[i], enemies.Y[i], enemies.WIDTH, enemies.HEIGHT);
             }
             List<Bullet> eBullets = battleField.EnemyBullets;
             for (int i = 0; i < eBullets.Count; i++)
                 graphics.DrawImage(enemyBulletImg, eBullets[i].X, eBullets[i].Y, eBullets[i].WIDTH, eBullets[i].HEIGHT);
 
-            graphics.DrawImage(playerImg, battleField.Player.X, battleField.Player.Y, battleField.Player.WIDTH, battleField.Player.HEIGHT);
+            graphics.DrawImage(playerImg, battleField.Player.x, battleField.Player.Y, battleField.Player.WIDTH, battleField.Player.HEIGHT);
 
             if (battleField.PlayerBullet != null)
                 graphics.DrawImage(bulletImg, battleField.PlayerBullet.X, battleField.PlayerBullet.Y, battleField.PlayerBullet.WIDTH, battleField.PlayerBullet.HEIGHT);
@@ -109,9 +114,16 @@ namespace SpaceInvadersClient
             {
                 socket.SendUdpPacket(packetManager.CreateKeyUpPacket(false));
             }
-            else if (e.KeyCode == Keys.D)
+            else if (e.KeyCode == Keys.D) // вправо
             {
                 socket.SendUdpPacket(packetManager.CreateKeyUpPacket(true));
+            }
+        }
+
+        private void ParallelDataReceive()
+        {
+            while (true) {
+                _ = packetManager.ParsePacket(socket.ReceiveUdpPacket(), ref battleField, ref packetNumber);
             }
         }
     }
