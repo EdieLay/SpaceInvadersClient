@@ -28,9 +28,11 @@
                 _enemyBullets[i].Move();
 
             _player.Move();
-            if (PlayerBullet != null) PlayerBullet.Move();
-
-            _enemies.CalculateBulletCollision(PlayerBullet);
+            if (PlayerBullet.IsAlive)
+            {
+                PlayerBullet.Move();
+                _enemies.CalculateBulletCollision(PlayerBullet);
+            }
             //_player.CalculateBulletsCollision(_enemyBullets);
         }
     }
