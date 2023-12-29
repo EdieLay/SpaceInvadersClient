@@ -64,8 +64,7 @@ namespace SpaceInvadersClient
         }
 
         public void CloseTcpSocket()
-        { 
-            TcpSocket.Shutdown(SocketShutdown.Both);
+        {
             TcpSocket.Close();
             TcpSocketIsOpen = false;
         }
@@ -75,7 +74,7 @@ namespace SpaceInvadersClient
             GameEndPoint = new IPEndPoint(serverIP, port);
         }
 
-        public void ConnectUdpSocket()
+        public void ConnectGameSocket()
         {
             UdpSocket.Bind(clientEP);
             UdpSocket.Connect(GameEndPoint);
@@ -92,16 +91,9 @@ namespace SpaceInvadersClient
 
         public byte[] ReceiveUdpPacket()
         {
-            using MemoryStream ms = new();
-            while (Visible)
-            {
-                byte[] data = new byte[1024];
-                int peek = UdpSocket.Receive(data, 0, 0, SocketFlags.Peek); // SocketFlags.Peek - возвращает кол-во доступных байт
-                if (peek == 0) break;
-                UdpSocket.Receive(data);
-                ms.Write(data, 0, peek);
-            }
-            return ms.ToArray();
+            byte[] data = new byte[1024];
+            UdpSocket.Receive(data);
+            return data;
         }
     }
 }
