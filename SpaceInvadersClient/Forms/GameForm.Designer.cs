@@ -28,8 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             labelLoading = new Label();
             gameOverText = new TextBox();
+            gameTimer = new System.Windows.Forms.Timer(components);
             SuspendLayout();
             // 
             // labelLoading
@@ -88,5 +90,6 @@
         #endregion
         private Label labelLoading;
         private TextBox gameOverText;
+        private System.Windows.Forms.Timer gameTimer;
     }
 }

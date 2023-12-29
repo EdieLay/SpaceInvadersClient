@@ -6,22 +6,22 @@ namespace SpaceInvadersClient
     {
         public PacketManager() { }
 
-        public byte[] CreatePressPlayPacket() // 1
+        public byte[] CreatePressPlayPacket() // 0
         {
             return new byte[] { (byte)PacketOpcode.PressPlay };
         }
 
-        public byte[] CreateKeyDownPacket(bool flagRight) // 3
+        public byte[] CreateKeyDownPacket(bool flagRight) // 2
         {
             return new byte[] { (byte)PacketOpcode.KeyDown, Convert.ToByte(flagRight) };
         }
 
-        public byte[] CreateKeyUpPacket(bool flagRight) // 4
+        public byte[] CreateKeyUpPacket(bool flagRight) // 3
         {
             return new byte[] { (byte)PacketOpcode.KeyUp, Convert.ToByte(flagRight) };
         }
 
-        public byte[] CreateShotKeyDownPacket() // 5
+        public byte[] CreateShotKeyDownPacket() // 4
         {
             return new byte[] { (byte)PacketOpcode.ShotKeyDown };
         }
@@ -52,11 +52,6 @@ namespace SpaceInvadersClient
             if (packet == null || packet.Length == 0) return -1;
             switch ((int)packet[0])
             {
-                case (int)PacketOpcode.OpenNewSocket:
-                    if (port == -1 || packet.Length < 3) return -1;
-                    port = (packet[1] << 8) + packet[2];
-                    return (int)PacketOpcode.OpenNewSocket;
-
                 case (int)PacketOpcode.GameObjectsInfo:
                     if (bf == null || packetNumber == -1 || packet.Length < 19) return -1;
 

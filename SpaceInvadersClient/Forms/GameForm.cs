@@ -10,7 +10,6 @@ namespace SpaceInvadersClient
         PacketManager packetManager { get; set; } = new(); // класс для конвертации отправляющихся и полученных данных
         DataManager dataManager { get; set; } = new();
 
-        System.Timers.Timer gameTimer { get; set; }
         BattleField battleField;
 
         Image enemyImg = new Bitmap(Resources.NoobShip);
@@ -25,9 +24,7 @@ namespace SpaceInvadersClient
             InitializeComponent();
 
             socket = _socket;
-            socket.Visible = true;
             battleField = new BattleField();
-            gameTimer = new System.Timers.Timer(TIMER_INTERVAL_MS);
             enemyBulletImg = bulletImg;
             enemyBulletImg.RotateFlip(RotateFlipType.Rotate180FlipNone);
 
@@ -39,13 +36,11 @@ namespace SpaceInvadersClient
 
         private void StartConnectionToServer(object? sender, EventArgs e)
         {
-            socket.ConnectUdpSocket();
-
             Thread thread = new(() => {
-                // ждем Enemies And Bullets Info по UDP 
+                // ждем Enemies And Bullets Info
                 int packetOpcode = -1;
                 while (packetOpcode != (int)PacketOpcode.GameObjectsInfo)
-                    packetOpcode = packetManager.ParsePacket(socket.ReceiveUdpPacket(), ref battleField, ref packetNumber);
+                    packetOpcode = packetManager.ParsePacket(socket.ReceiveTcpPacket(), ref battleField, ref packetNumber);
             });
             thread.Start();
             thread.Join();
@@ -60,8 +55,9 @@ namespace SpaceInvadersClient
         private void InitGame() // инициализация игры
         {
             // событие будет порождаться в потоке из пула потоков CLR по умолчанию
-            gameTimer.Elapsed += Update; 
-            gameTimer.AutoReset = true;
+            gameTimer.Interval = TIMER_INTERVAL_MS;
+            gameTimer.Enabled = true;
+            gameTimer.Tick += Update; 
             gameTimer.Enabled = true;
 
             labelLoading.Hide();
@@ -97,16 +93,16 @@ namespace SpaceInvadersClient
             if (e.KeyCode == Keys.A) // влево
             {
                 battleField.Player.KeyDown(false);
-                socket.SendUdpPacket(packetManager.CreateKeyDownPacket(false));
+                socket.SendTcpPacket(packetManager.CreateKeyDownPacket(false));
             }
             else if (e.KeyCode == Keys.D) // вправо
             {
                 battleField.Player.KeyDown(true);
-                socket.SendUdpPacket(packetManager.CreateKeyDownPacket(true));
+                socket.SendTcpPacket(packetManager.CreateKeyDownPacket(true));
             }
             else if (e.KeyCode == Keys.Space) // выстрел
             {
-                socket.SendUdpPacket(packetManager.CreateShotKeyDownPacket());
+                socket.SendTcpPacket(packetManager.CreateShotKeyDownPacket());
             }
         }
         private void GameForm_KeyUp(object sender, KeyEventArgs e)
@@ -114,19 +110,19 @@ namespace SpaceInvadersClient
             if (e.KeyCode == Keys.A) // влево
             {
                 battleField.Player.KeyUp();
-                socket.SendUdpPacket(packetManager.CreateKeyUpPacket(false));
+                socket.SendTcpPacket(packetManager.CreateKeyUpPacket(false));
             }
             else if (e.KeyCode == Keys.D) // вправо
             {
                 battleField.Player.KeyUp();
-                socket.SendUdpPacket(packetManager.CreateKeyUpPacket(true));
+                socket.SendTcpPacket(packetManager.CreateKeyUpPacket(true));
             }
         }
 
         private void ParallelDataReceive()
         {
             while (Visible) {
-                int opcode = packetManager.ParsePacket(socket.ReceiveUdpPacket(), ref battleField, ref packetNumber);
+                int opcode = packetManager.ParsePacket(socket.ReceiveTcpPacket(), ref battleField, ref packetNumber);
                 if (opcode == (int)PacketOpcode.PlayerDeath)
                 {
                     FinishGame();
@@ -151,7 +147,6 @@ namespace SpaceInvadersClient
             if (e.KeyCode == Keys.Enter)
             {
                 this.Hide();
-                socket.Visible = false;
 
                 Application.Exit();
                 System.Diagnostics.Process.Start(Application.ExecutablePath);
