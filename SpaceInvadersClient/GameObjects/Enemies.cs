@@ -96,6 +96,10 @@
 
         public void Sync()
         {
+            for (int i = 0; i < _x.Length; i++)
+                _x[i] = i / COLS * (WIDTH + GAP_X) + offsetX;
+            for (int i = 0; i < _y.Length; i++)
+                _y[i] = i % COLS * (HEIGHT + GAP_Y) + offsetY;
         }
 
         public int CalculateBulletCollision(Bullet bullet)

@@ -37,7 +37,15 @@ namespace SpaceInvadersClient
 
         public void SendTcpPacket(byte[] packet)
         {
-            TcpSocket.Send(packet);
+            try
+            {
+                TcpSocket.Send(packet);
+            }
+            catch (SocketException)
+            {
+                Application.Exit();
+                System.Diagnostics.Process.Start(Application.ExecutablePath);
+            }
         }
 
         public byte[] ReceiveTcpPacket()

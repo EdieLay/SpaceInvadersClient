@@ -68,6 +68,8 @@ namespace SpaceInvadersClient
                         if (packet[i] == 0) bf.Enemies.boolEnemies[i] = false;
                         else bf.Enemies.boolEnemies[i] = true;
                     }
+                    bf.Enemies.Sync();
+
                     int bulletsNumber = packet[18];
                     if (packet.Length < 19 + bulletsNumber * 5) return -1;
                     bf.EnemyBullets.Clear();
