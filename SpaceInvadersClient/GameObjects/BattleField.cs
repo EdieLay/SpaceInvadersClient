@@ -30,8 +30,8 @@
             _player.Move();
             if (PlayerBullet != null) PlayerBullet.Move();
 
-            Score += _enemies.CalculateBulletCollision(PlayerBullet);
-            _player.CalculateBulletsCollision(_enemyBullets);
+            _enemies.CalculateBulletCollision(PlayerBullet);
+            //_player.CalculateBulletsCollision(_enemyBullets);
         }
     }
 }

@@ -47,9 +47,12 @@
                 x = x - _speed < 0 ? 0 : x - _speed;
         }
 
-        public void CalculateBulletsCollision(List<Bullet> enemyBullets)
+        // пока что столкновение с пацанами реализовано просто, как заход на один игрек с игроком
+        public bool CalculateEnemyCollision(int downBorder)
         {
-            // ???
+            if (downBorder > _Y)
+                return true;
+            return false;
         }
     }
 }
