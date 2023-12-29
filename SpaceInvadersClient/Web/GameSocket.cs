@@ -13,7 +13,7 @@ namespace SpaceInvadersClient
 
         public GameSocket()
         {
-            ServerEndPoint = new IPEndPoint(serverIP, 14700);
+            ServerEndPoint = new IPEndPoint(serverIP, 8791);
             GameEndPoint = ServerEndPoint;
             TryToConnectTcp();
         }
