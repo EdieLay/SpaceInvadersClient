@@ -39,6 +39,7 @@ namespace SpaceInvadersClient
                 while (packetOpcodeNumber != (int)PacketOpcode.OpenNewSocket)
                 {
                     packetOpcodeNumber = packetManager.ParsePacket(socket.ReceiveTcpPacket(), ref port);
+                    Console.WriteLine(packetOpcodeNumber.ToString());
                 }
             });
             thread.Start();

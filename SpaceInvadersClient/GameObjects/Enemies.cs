@@ -26,10 +26,10 @@
         public int offsetY { get; set; } // смещение левого верхнего угла каждого пацана относительно его начальной позиции по игрек
         public int speed { get; set; } // скорость пацанов по икс за тик таймера
 
-        int downBorder;
-        int upBorder;
-        int leftBorder;
-        int rightBorder;
+        int downBorder; // координата y нижней границы
+        int upBorder; // координаты y верхней границы
+        int leftBorder; // координата x левой границы
+        int rightBorder; // координата x правой границы
 
         int downBorderNum; // номер нижней границы пацанов
         int upBorderNum; // номер верхней
@@ -62,20 +62,28 @@
             wave = 1;
         }
 
-        public void Move() // нужно изменить
+        public void Move()
         {
-            offsetX += speed;
-            if (offsetX + WIDTH * COLS + GAP_X * (COLS - 1) >= FIELD_WIDTH)
+            if (_x[rightBorderNum] + WIDTH + speed >= FIELD_WIDTH)
             {
-                offsetY += HEIGHT;
-                offsetX = FIELD_WIDTH - WIDTH * COLS + GAP_X * (COLS - 1);
+                for (int i = 0; i < _x.Length; i++)
+                    _y[i] += HEIGHT;
+                for (int i = rightBorderNum; i >= leftBorderNum; i--)
+                    _x[i] = FIELD_WIDTH + WIDTH * (i - rightBorderNum - 1) + GAP_X * (i - rightBorderNum);
                 speed *= -1;
             }
-            else if (offsetX < 0)
+            else if (_x[leftBorder] < 0)
             {
-                offsetY++;
-                offsetX = 0;
+                for (int i = 0; i < _x.Length; i++)
+                    _y[i] += HEIGHT;
+                for (int i = leftBorderNum; i <= rightBorderNum; i++)
+                    _x[i] = WIDTH * (i - leftBorderNum) + GAP_X * (i - leftBorderNum);
                 speed *= -1;
+            }
+            else
+            {
+                for (int i = 0; i < _x.Length; i++)
+                    _x[rightBorderNum] += speed;
             }
         }
 

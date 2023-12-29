@@ -26,7 +26,6 @@ namespace SpaceInvadersClient
             }
             catch (SocketException) 
             {
-                Thread.Sleep(100);
                 TryToConnectTcp();
             }
         }
