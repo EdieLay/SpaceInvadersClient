@@ -25,6 +25,8 @@ namespace SpaceInvadersClient
             buttonPlay.Hide();
             buttonResults.Hide();
 
+            socket = new GameSocket();
+
             labelLoading.Hide();
             buttonPlay.Show();
             buttonResults.Show();
