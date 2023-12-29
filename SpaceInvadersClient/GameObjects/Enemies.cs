@@ -90,8 +90,12 @@
             else
             {
                 for (int i = 0; i < _x.Length; i++)
-                    _x[rightBorderNum] += speed;
+                    _x[i] += speed;
             }
+        }
+
+        public void Sync()
+        {
         }
 
         public int CalculateBulletCollision(Bullet bullet)
