@@ -3,6 +3,15 @@
     public class DataManager
     {
         const string ResultsFile = "Results.txt";
+
+        public DataManager() 
+        {
+            if (!File.Exists(ResultsFile))
+            {
+                File.Create(ResultsFile);
+            }
+        }
+
         public void AddResult(int score)
         {
             using StreamWriter ofstream = new(ResultsFile, true);

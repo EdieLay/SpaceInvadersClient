@@ -45,7 +45,6 @@ namespace SpaceInvadersClient
             thread.Start();
             thread.Join();
 
-            socket.CloseTcpSocket();
             socket.InitUdpSocket(port);
 
             labelLoading.Hide();
@@ -57,6 +56,7 @@ namespace SpaceInvadersClient
         {
             // send Press Play
             socket.SendTcpPacket(packetManager.CreatePressPlayPacket());
+            //socket.CloseTcpSocket();
 
             GameForm gameForm = new(socket);
             gameForm.Show();

@@ -14,15 +14,6 @@
             socket = _socket;
             menuForm = _menuForm;
 
-            textResults.Hide();
-            labelLoading.Show();
-
-            // ждем ???
-            //int packetOpcodeNumber = -1;
-            //while (packetOpcodeNumber != (int)PacketOpcode.EnemiesAndBulletsInfo)
-            //    packetOpcodeNumber = packetManager.ParsePacket(socket.ReceivePacket());
-
-            // начинаем отображать
             labelLoading.Hide();
             textResults.Show();
 

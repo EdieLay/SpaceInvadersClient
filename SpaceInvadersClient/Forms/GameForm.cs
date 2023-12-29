@@ -117,7 +117,7 @@ namespace SpaceInvadersClient
 
         private void ParallelDataReceive()
         {
-            while (true) {
+            while (Visible) {
                 int opcode = packetManager.ParsePacket(socket.ReceiveUdpPacket(), ref battleField, ref packetNumber);
                 if (opcode == (int)PacketOpcode.PlayerDeath)
                 {
@@ -142,6 +142,8 @@ namespace SpaceInvadersClient
         {
             if (e.KeyCode == Keys.Enter)
             {
+                this.Hide();
+                socket.Visible = false;
                 System.Diagnostics.Process.Start(Application.ExecutablePath);
                 Application.Exit();
             }

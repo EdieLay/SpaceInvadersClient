@@ -49,6 +49,7 @@
             buttonResults.TabIndex = 2;
             buttonResults.Text = "RESULTS";
             buttonResults.UseVisualStyleBackColor = false;
+            buttonResults.Click += buttonResults_Click;
             // 
             // buttonPlay
             // 
@@ -66,6 +67,7 @@
             buttonPlay.TabIndex = 3;
             buttonPlay.Text = "PLAY";
             buttonPlay.UseVisualStyleBackColor = false;
+            buttonPlay.Click += buttonPlay_Click;
             // 
             // labelLoading
             // 

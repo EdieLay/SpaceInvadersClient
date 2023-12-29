@@ -11,11 +11,21 @@ namespace SpaceInvadersClient
         Socket TcpSocket { get; set; } = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         Socket UdpSocket { get; set; } = new(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
+        bool TcpSocketIsOpen = true;
+        public bool Visible { get; set; } = true;
+
         public GameSocket()
         {
             ServerEndPoint = new IPEndPoint(serverIP, 8791);
             GameEndPoint = ServerEndPoint;
             TryToConnectTcp();
+        }
+
+        ~GameSocket()
+        {
+            Visible = false;
+            UdpSocket.Close();
+            TcpSocket.Close();
         }
 
         private void TryToConnectTcp()
@@ -44,14 +54,23 @@ namespace SpaceInvadersClient
         public byte[] ReceiveTcpPacket()
         {
             byte[] packet = new byte[1024];
-            TcpSocket.Receive(packet);
+            try
+            {
+                TcpSocket.Receive(packet);
+            }
+            catch (SocketException)
+            {
+                Application.Exit();
+                System.Diagnostics.Process.Start(Application.ExecutablePath);
+            }
             return packet;
         }
 
         public void CloseTcpSocket()
         { 
             TcpSocket.Shutdown(SocketShutdown.Both);
-            TcpSocket.Close(); 
+            TcpSocket.Close();
+            TcpSocketIsOpen = false;
         }
 
         public void SendUdpPacket(byte[] packet)
@@ -66,7 +85,7 @@ namespace SpaceInvadersClient
         public byte[] ReceiveUdpPacket()
         {
             using MemoryStream ms = new();
-            while (true)
+            while (Visible)
             {
                 byte[] data = new byte[1024];
                 int peek = UdpSocket.Receive(data, 0, 0, SocketFlags.Peek); // SocketFlags.Peek - возвращает кол-во доступных байт
