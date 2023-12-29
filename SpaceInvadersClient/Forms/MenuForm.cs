@@ -67,7 +67,7 @@ namespace SpaceInvadersClient
         {
             LeaderboardForm leaderboardForm = new(socket, this);
             leaderboardForm.Show();
-            this.Hide();
+            this.Close();
         }
     }
 }

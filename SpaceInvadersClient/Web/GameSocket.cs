@@ -5,6 +5,8 @@ namespace SpaceInvadersClient
 {
     public class GameSocket
     {
+        EndPoint clientEP = new IPEndPoint(IPAddress.Any, 0);
+
         IPAddress serverIP = IPAddress.Parse("127.0.0.1");
         EndPoint ServerEndPoint { get; set; }
         EndPoint GameEndPoint { get; set; }
@@ -32,18 +34,13 @@ namespace SpaceInvadersClient
         {
             try
             {
+                TcpSocket.Bind(clientEP);
                 TcpSocket.Connect(ServerEndPoint);
             }
             catch (SocketException) 
             {
                 TryToConnectTcp();
             }
-        }
-
-        public void InitUdpSocket(int port)
-        {
-            GameEndPoint = new IPEndPoint(serverIP, port);
-            UdpSocket.Connect(GameEndPoint);
         }
 
         public void SendTcpPacket(byte[] packet)
@@ -71,6 +68,17 @@ namespace SpaceInvadersClient
             TcpSocket.Shutdown(SocketShutdown.Both);
             TcpSocket.Close();
             TcpSocketIsOpen = false;
+        }
+
+        public void InitUdpSocket(int port)
+        {
+            GameEndPoint = new IPEndPoint(serverIP, port);
+        }
+
+        public void ConnectUdpSocket()
+        {
+            UdpSocket.Bind(clientEP);
+            UdpSocket.Connect(GameEndPoint);
         }
 
         public void SendUdpPacket(byte[] packet)

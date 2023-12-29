@@ -39,6 +39,8 @@ namespace SpaceInvadersClient
 
         private void StartConnectionToServer(object? sender, EventArgs e)
         {
+            socket.ConnectUdpSocket();
+
             Thread thread = new(() => {
                 // ждем Enemies And Bullets Info по UDP 
                 int packetOpcode = -1;
@@ -130,7 +132,6 @@ namespace SpaceInvadersClient
                     FinishGame();
                     return;
                 }
-                if (!Visible) return;
             }
         }
 
