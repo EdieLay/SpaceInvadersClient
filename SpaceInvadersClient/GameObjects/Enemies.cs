@@ -60,6 +60,13 @@
             rightBorderNum = COLS - 1;
 
             wave = 1;
+
+            _x = new int[ROWS * COLS];
+            _y = new int[ROWS * COLS];
+            for (int i = 0; i < _x.Length; i++)
+                _x[i] = -10;
+            for (int i = 0; i < _y.Length; i++)
+                _y[i] = -10;
         }
 
         public void Move()

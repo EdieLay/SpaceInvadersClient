@@ -20,13 +20,12 @@ namespace SpaceInvadersClient
 
         int packetNumber = 0; // номер последнего принятого пакета GameObjectsInfo
 
-        Thread dataReceiveThread; // поток, в котором выполняется постоянное принятие данных
-
         public GameForm(GameSocket _socket)
         {
             InitializeComponent();
 
             socket = _socket;
+            socket.Visible = true;
             battleField = new BattleField();
             gameTimer = new System.Timers.Timer(TIMER_INTERVAL_MS);
             enemyBulletImg = bulletImg;
@@ -35,15 +34,24 @@ namespace SpaceInvadersClient
             labelLoading.Show();
             gameOverText.Hide();
 
-            // ждем Enemies And Bullets Info по UDP 
-            int packetOpcode = -1;
-            while (packetOpcode != (int)PacketOpcode.GameObjectsInfo)
-                packetOpcode = packetManager.ParsePacket(socket.ReceiveUdpPacket(), ref battleField, ref packetNumber);
+            Shown += new EventHandler(StartConnectionToServer);
+        }
+
+        private void StartConnectionToServer(object? sender, EventArgs e)
+        {
+            Thread thread = new(() => {
+                // ждем Enemies And Bullets Info по UDP 
+                int packetOpcode = -1;
+                while (packetOpcode != (int)PacketOpcode.GameObjectsInfo)
+                    packetOpcode = packetManager.ParsePacket(socket.ReceiveUdpPacket(), ref battleField, ref packetNumber);
+            });
+            thread.Start();
+            thread.Join();
 
             // инициализируем игру
             InitGame();
 
-            dataReceiveThread = new(() => { ParallelDataReceive(); });
+            Thread dataReceiveThread = new(() => { ParallelDataReceive(); });
             dataReceiveThread.Start();
         }
 
@@ -53,8 +61,6 @@ namespace SpaceInvadersClient
             gameTimer.Elapsed += Update; 
             gameTimer.AutoReset = true;
             gameTimer.Enabled = true;
-
-            // ???
 
             labelLoading.Hide();
         }
@@ -124,6 +130,7 @@ namespace SpaceInvadersClient
                     FinishGame();
                     return;
                 }
+                if (!Visible) return;
             }
         }
 
@@ -144,8 +151,9 @@ namespace SpaceInvadersClient
             {
                 this.Hide();
                 socket.Visible = false;
-                System.Diagnostics.Process.Start(Application.ExecutablePath);
+
                 Application.Exit();
+                System.Diagnostics.Process.Start(Application.ExecutablePath);
             }
         }
     }
