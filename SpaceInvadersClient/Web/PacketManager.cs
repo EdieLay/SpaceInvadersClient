@@ -65,8 +65,17 @@ namespace SpaceInvadersClient
                     bf.Enemies.speed = (packet[9] << 8) + packet[10];
                     for (int i = 11; i <= 17; i++)
                     {
-                        if (packet[i] == 0) bf.Enemies.boolEnemies[i] = false;
-                        else bf.Enemies.boolEnemies[i] = true;
+                        byte alive = packet[i];
+                        for (int j = 0; j < 8; j++)
+                        {
+                            if (8 * (i - 11) + j < bf.Enemies.boolEnemies.Length)
+                            {
+                                if (1 == ((alive >> 7 - j) & 0b_0000_0001))
+                                    bf.Enemies.boolEnemies[8 * (i - 11) + j] = true;
+                                else
+                                    bf.Enemies.boolEnemies[8 * (i - 11) + j] = false;
+                            }
+                        }
                     }
                     bf.Enemies.Sync();
 
@@ -74,7 +83,7 @@ namespace SpaceInvadersClient
                     if (packet.Length < 19 + bulletsNumber * 5) return -1;
                     bf.EnemyBullets.Clear();
                     bf.PlayerBullet = new(0, 0, 0, false);
-                    int ind = 18;
+                    int ind = 19;
                     while (ind < 19 + bulletsNumber * 5)
                     {
                         int x = (packet[ind++] << 8) + packet[ind++];

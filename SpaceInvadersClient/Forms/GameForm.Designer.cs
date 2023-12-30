@@ -41,9 +41,9 @@
             labelLoading.Font = new Font("Consolas", 36F, FontStyle.Bold, GraphicsUnit.Point);
             labelLoading.ForeColor = SystemColors.ButtonHighlight;
             labelLoading.ImageAlign = ContentAlignment.TopLeft;
-            labelLoading.Location = new Point(166, 343);
+            labelLoading.Location = new Point(190, 457);
             labelLoading.Name = "labelLoading";
-            labelLoading.Size = new Size(284, 56);
+            labelLoading.Size = new Size(360, 70);
             labelLoading.TabIndex = 0;
             labelLoading.Text = "loading...";
             // 
@@ -53,20 +53,19 @@
             gameOverText.BackColor = SystemColors.InfoText;
             gameOverText.Font = new Font("Consolas", 20F, FontStyle.Bold, GraphicsUnit.Point);
             gameOverText.ForeColor = SystemColors.HighlightText;
-            gameOverText.Location = new Point(97, 330);
-            gameOverText.Margin = new Padding(3, 2, 3, 2);
+            gameOverText.Location = new Point(111, 440);
             gameOverText.Multiline = true;
             gameOverText.Name = "gameOverText";
             gameOverText.ReadOnly = true;
             gameOverText.ShortcutsEnabled = false;
-            gameOverText.Size = new Size(421, 140);
+            gameOverText.Size = new Size(395, 0);
             gameOverText.TabIndex = 1;
             gameOverText.TextAlign = HorizontalAlignment.Center;
             gameOverText.KeyDown += gameOverText_KeyDown;
             // 
             // GameForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.Background;
             BackgroundImageLayout = ImageLayout.Zoom;
@@ -74,8 +73,7 @@
             Controls.Add(labelLoading);
             Controls.Add(gameOverText);
             DoubleBuffered = true;
-            FormBorderStyle = FormBorderStyle.FixedSingle;
-            Margin = new Padding(3, 2, 3, 2);
+            FormBorderStyle = FormBorderStyle.None;
             MaximizeBox = false;
             Name = "GameForm";
             StartPosition = FormStartPosition.CenterScreen;

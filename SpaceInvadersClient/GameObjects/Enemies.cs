@@ -71,20 +71,20 @@
 
         public void Move()
         {
-            if (_x[rightBorderNum] + WIDTH + speed >= FIELD_WIDTH)
+            if (rightBorder + speed >= FIELD_WIDTH)
             {
-                for (int i = 0; i < _x.Length; i++)
+                for (int i = 0; i < _y.Length; i++)
                     _y[i] += HEIGHT;
-                for (int i = rightBorderNum; i >= leftBorderNum; i--)
-                    _x[i] = FIELD_WIDTH + WIDTH * (i - rightBorderNum - 1) + GAP_X * (i - rightBorderNum);
+                for (int i = 0; i < _x.Length; i++)
+                    _x[i] = FIELD_WIDTH - WIDTH * (COLS - i % COLS) - GAP_X * (COLS - i % COLS - 1);
                 speed *= -1;
             }
-            else if (_x[leftBorder] < 0)
+            else if (leftBorder + speed < 0)
             {
-                for (int i = 0; i < _x.Length; i++)
+                for (int i = 0; i < _y.Length; i++)
                     _y[i] += HEIGHT;
-                for (int i = leftBorderNum; i <= rightBorderNum; i++)
-                    _x[i] = WIDTH * (i - leftBorderNum) + GAP_X * (i - leftBorderNum);
+                for (int i = 0; i < _x.Length; i++)
+                    _x[i] = WIDTH * (i % COLS) + GAP_X * (i % COLS);
                 speed *= -1;
             }
             else
@@ -97,9 +97,9 @@
         public void Sync()
         {
             for (int i = 0; i < _x.Length; i++)
-                _x[i] = i / COLS * (WIDTH + GAP_X) + offsetX;
+                _x[i] = i % COLS * (WIDTH + GAP_X) + offsetX;
             for (int i = 0; i < _y.Length; i++)
-                _y[i] = i % COLS * (HEIGHT + GAP_Y) + offsetY;
+                _y[i] = i / COLS * (HEIGHT + GAP_Y) + offsetY;
         }
 
         public int CalculateBulletCollision(Bullet bullet)

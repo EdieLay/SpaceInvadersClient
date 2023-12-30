@@ -66,6 +66,7 @@ namespace SpaceInvadersClient
         private void Update(object? sender, EventArgs e)
         {
             battleField.Update();
+            Invalidate();
         }
 
         private void OnPaint(object sender, PaintEventArgs e)
@@ -84,7 +85,7 @@ namespace SpaceInvadersClient
 
             graphics.DrawImage(playerImg, battleField.Player.x, battleField.Player.Y, battleField.Player.WIDTH, battleField.Player.HEIGHT);
 
-            if (battleField.PlayerBullet != null)
+            if (battleField.PlayerBullet != null && battleField.PlayerBullet.IsAlive)
                 graphics.DrawImage(bulletImg, battleField.PlayerBullet.X, battleField.PlayerBullet.Y, battleField.PlayerBullet.WIDTH, battleField.PlayerBullet.HEIGHT);
         }
 
@@ -125,7 +126,7 @@ namespace SpaceInvadersClient
                 int opcode = packetManager.ParsePacket(socket.ReceiveTcpPacket(), ref battleField, ref packetNumber);
                 if (opcode == (int)PacketOpcode.PlayerDeath)
                 {
-                    FinishGame();
+                    //FinishGame();
                     return;
                 }
             }

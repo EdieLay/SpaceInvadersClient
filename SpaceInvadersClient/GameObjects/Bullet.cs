@@ -24,7 +24,7 @@
 
         public void Move()
         {
-            _x += _speed;
+            _y += _speed;
         }
     }
 }
