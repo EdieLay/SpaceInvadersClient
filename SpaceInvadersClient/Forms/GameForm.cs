@@ -126,7 +126,7 @@ namespace SpaceInvadersClient
                 int opcode = packetManager.ParsePacket(socket.ReceiveTcpPacket(), ref battleField, ref packetNumber);
                 if (opcode == (int)PacketOpcode.PlayerDeath)
                 {
-                    //FinishGame();
+                    FinishGame();
                     return;
                 }
             }
