@@ -2,8 +2,8 @@
 {
     public class Bullet
     {
-        const int _WIDTH = 2;
-        const int _HEIGHT = 5;
+        const int _WIDTH = 6;
+        const int _HEIGHT = 15;
         public int WIDTH { get => _WIDTH; }
         public int HEIGHT { get => _HEIGHT; }
 

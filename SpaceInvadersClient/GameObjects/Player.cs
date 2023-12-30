@@ -5,8 +5,8 @@
         readonly int FIELD_WIDTH; // ширина поля
         readonly int FIELD_HEIGHT; // высота поля
 
-        const int _WIDTH = 20;
-        const int _HEIGHT = 15;
+        const int _WIDTH = 60;
+        const int _HEIGHT = 45;
         public int WIDTH { get => _WIDTH; }
         public int HEIGHT { get => _HEIGHT; }
 
@@ -24,7 +24,7 @@
         {
             FIELD_WIDTH = fieldWidth;
             FIELD_HEIGHT = fieldHeight;
-            _Y = FIELD_HEIGHT - 4 * HEIGHT;
+            _Y = FIELD_HEIGHT - 2 * HEIGHT;
             x = FIELD_WIDTH / 2 - _WIDTH / 2;
         }
 

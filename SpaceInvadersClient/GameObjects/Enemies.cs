@@ -2,14 +2,14 @@
 {
     public class Enemies
     {
-        const int _WIDTH = 20; // ширина пацана
-        const int _HEIGHT = 15; // высота пацана
+        const int _WIDTH = 30; // ширина пацана
+        const int _HEIGHT = 20; // высота пацана
         public int WIDTH { get => _WIDTH; }
         public int HEIGHT { get => _HEIGHT; }
 
         const int ROWS = 5; // количество строк пацанов
         const int COLS = 11; // количество столбцов пацанов
-        const int GAP_X = 3; // расстояние от правого конца пацана до следующего пацана
+        const int GAP_X = 7; // расстояние от правого конца пацана до следующего пацана
         const int GAP_Y = _HEIGHT; // расстояние от нижнего конца пацана до следующего пацана
         readonly int FIELD_WIDTH; // ширина поля
         readonly int FIELD_HEIGHT; // высота поля
