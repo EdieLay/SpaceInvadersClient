@@ -28,7 +28,7 @@ namespace SpaceInvadersClient
         {
             try
             {
-                TcpSocket.Bind(clientEP);
+                //TcpSocket.Bind(clientEP);
                 TcpSocket.Connect(ServerEndPoint);
             }
             catch (SocketException) 
