@@ -1,5 +1,7 @@
-﻿using System.Net;
+﻿using System.CodeDom;
+using System.Net;
 using System.Net.Sockets;
+using System.Windows.Forms;
 
 namespace SpaceInvadersClient
 {
@@ -51,15 +53,70 @@ namespace SpaceInvadersClient
         public byte[] ReceiveTcpPacket()
         {
             byte[] packet = new byte[1024];
-            try
-            {
-                TcpSocket.Receive(packet);
+            int bytesNumber = 0;
+            int RBnumber1 = 0;
+
+            try {
+                RBnumber1 = TcpSocket.Receive(packet);
             }
-            catch (SocketException)
-            {
+            catch (SocketException) {
                 Application.Exit();
                 System.Diagnostics.Process.Start(Application.ExecutablePath);
             }
+
+            switch ((int)packet[0])
+            {
+                case (int)PacketOpcode.GameObjectsInfo:
+                    bytesNumber = 19;
+                    break;
+                case (int)PacketOpcode.NewScore:
+                    bytesNumber = 5;
+                    break;
+                case (int)PacketOpcode.PlayerDeath:
+                    bytesNumber = 1; 
+                    break;
+            }
+
+            byte[] packet2 = new byte[1024];
+            int RBnumber2 = 0;
+            int receiveBytesNumber = RBnumber1;
+            while (receiveBytesNumber < bytesNumber)
+            {
+                try
+                {
+                    RBnumber2 = TcpSocket.Receive(packet);
+                }
+                catch (SocketException)
+                {
+                    Application.Exit();
+                    System.Diagnostics.Process.Start(Application.ExecutablePath);
+                }
+                receiveBytesNumber += RBnumber2;
+                Array.Copy(packet2, 0, packet, RBnumber1, receiveBytesNumber - RBnumber1);
+            }
+
+            if ((int)packet[0] == (int)PacketOpcode.GameObjectsInfo)
+            {
+                bytesNumber = 19 + (int)packet[19] * 5;
+            }
+
+            RBnumber1 = receiveBytesNumber;
+            RBnumber2 = 0;
+            while (receiveBytesNumber < bytesNumber)
+            {
+                try
+                {
+                    RBnumber2 = TcpSocket.Receive(packet);
+                }
+                catch (SocketException)
+                {
+                    Application.Exit();
+                    System.Diagnostics.Process.Start(Application.ExecutablePath);
+                }
+                receiveBytesNumber += RBnumber2;
+                Array.Copy(packet2, 0, packet, RBnumber1, receiveBytesNumber - RBnumber1);
+            }
+
             return packet;
         }
 

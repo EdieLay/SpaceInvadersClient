@@ -74,7 +74,7 @@
             Controls.Add(labelLoading);
             Controls.Add(gameOverText);
             DoubleBuffered = true;
-            FormBorderStyle = FormBorderStyle.None;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Margin = new Padding(3, 2, 3, 2);
             MaximizeBox = false;
             Name = "GameForm";

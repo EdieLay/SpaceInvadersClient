@@ -38,15 +38,13 @@ namespace SpaceInvadersClient
             return ParsePacket(packet, ref bf, ref port, ref packetNumber);
         }
 
-        // LaunchClient = 0, // Новый клиент запустил игру : к-с
-        // OpenNewSocket = 1, // Открытие нового сокета : с-к
-        // PressPlay = 2, // Нажата кнопка играть : к-с
-        // GameObjectsInfo = 3, // Инфа об игроке, пацанах и пулях : с-к
-        // KeyDown = 4, // Кнопка нажата (KeyDown) : к-с
-        // KeyUp = 5, // Кнопка отжата (KeyUp) : к-с
-        // ShotKeyDown = 6, // Кнопка выстрела (KeyDown) : к-с
-        // NewScore = 7, // Новый счёт при попадании : с-к
-        // PlayerDeath = 8, // Смерть игрока (конец игры) : с-к
+        //PressPlay = 0, // Нажата кнопка играть : к-с
+        //GameObjectsInfo = 1, // Инфа об игроке, пацанах и пулях : с-к
+        //KeyDown = 2, // Кнопка нажата (KeyDown) : к-с
+        //KeyUp = 3, // Кнопка отжата (KeyUp) : к-с
+        //ShotKeyDown = 4, // Кнопка выстрела (KeyDown) : к-с
+        //NewScore = 5, // Новый счёт при попадании : с-к
+        //PlayerDeath = 6, // Смерть игрока (конец игры) : с-к
         public int ParsePacket(byte[] packet, ref BattleField bf, ref int port, ref int packetNumber)
         {
             if (packet == null || packet.Length == 0) return -1;
